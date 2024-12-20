@@ -18,9 +18,9 @@ public:
     double resistance;
 
     void force(int floor){
-        this->health *= floor/3 + 1;
-        this->atk *= floor/3 + 1;
-        this->strengthen += 0.1;
+        this->health *= floor/2 + 1;
+        this->atk *= floor/2 + 1;
+        this->strengthen += 0.1*(floor/3 + 1);
         this->resistance += 0.1;
     }
 
