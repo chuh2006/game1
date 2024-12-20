@@ -6,14 +6,11 @@
 #include "enemy.cpp"
 
 class Game{
-
 public:
     Game(int seed){
         this->seed = seed;
         this->floor = 1;
     }
-
-    int seed;
 
     void processGame(){
         while(true){
@@ -31,6 +28,7 @@ public:
     }
 
 private:
+    int seed;
     int floor;
 
     void play(){
@@ -81,13 +79,13 @@ private:
                         attact_E(1, player, enemy);
                         break;
                     case 2:
-                        attact_PP({0.50, 0.25, 0.25, 1}, player, enemy, 2);
+                        attact_PP({0.50, 0.25, 1.5, 1}, player, enemy, 2);
                         player.nengjinshou += 1;
                         attact_E(1, player, enemy);
                         break;
                     case 3:
                         if(player.isSkillAvailable()){
-                            attact_PP({0.5, 0.5, 1, 1.5, 0.5, 2}, player, enemy, 0, true);
+                            attact_PP({0.5, 1, 1.25, 1.5, 0.75, 2.5}, player, enemy, 0, true);
                             player.nengjinshou += 2;
                             attact_E(1, player, enemy);
                             player.sp -= 10;
@@ -104,7 +102,7 @@ private:
                 }
                 if(player.nengjinshou >= 6 && in2 != 4 && in2 != 5){
                     player.nengjinshou -= 6;
-                    attact_PP({0.5, 0.5, 2, 1, 1}, player, enemy, 0);
+                    attact_PP({1, 0.5, 2, 1, 1.5}, player, enemy, 0);
                 }
                 std::cout << "| player's total damage: " << player.epochDamage << std::endl;
                 showMsg(player, enemy);
@@ -197,7 +195,7 @@ private:
         for (double time : times) {
             attact_P(time, player, enem, 0);
             if(isSkill){
-                player.strengthen += 0.1;
+                player.strengthen += 0.5;
                 player.critical_D += 0.2;
             }
         }
@@ -274,7 +272,7 @@ private:
         return ret;
     }
     std::uniform_int_distribution<> getHardRange(int seed){
-        std::uniform_int_distribution<> ret(seed*250, seed*500);
+        std::uniform_int_distribution<> ret(seed*300, seed*600);
         return ret;
     }
 
