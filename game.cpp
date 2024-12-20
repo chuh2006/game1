@@ -87,7 +87,7 @@ private:
                         break;
                     case 3:
                         if(player.isSkillAvailable()){
-                            attact_PP({0.5, 0.5, 2, 1, 1}, player, enemy, 0);
+                            attact_PP({0.5, 0.5, 1, 1.5, 0.5, 2}, player, enemy, 0, true);
                             player.nengjinshou += 2;
                             attact_E(1, player, enemy);
                             player.sp -= 10;
@@ -191,11 +191,19 @@ private:
         player.epochDamage += damage;
         player.sp += sp;
     }
-    void attact_PP(std::vector<double> times, Player &player, Enemy &enem, int sp){
+    void attact_PP(std::vector<double> times, Player &player, Enemy &enem, int sp, bool isSkill = false){
+        auto temp1 = player.strengthen;
+        auto temp2 = player.critical_D;
         for (double time : times) {
             attact_P(time, player, enem, 0);
+            if(isSkill){
+                player.strengthen += 0.1;
+                player.critical_D += 0.2;
+            }
         }
         player.sp += sp;
+        player.strengthen = temp1;
+        player.critical_D = temp2;
     }
     void attact_E(double time, Player &player, Enemy &enemy){
         double damage = time * calcDam_E(enemy, player);
