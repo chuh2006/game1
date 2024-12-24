@@ -29,7 +29,7 @@ public:
     double resistance;
     int sp;
     double cureStrength;
-    int epochDamage = 0;
+    long long epochDamage = 0;
     int nengjinshou;
     double real_D(){
         return(atk * (1 + strengthen + isCritical() * critical_D));
