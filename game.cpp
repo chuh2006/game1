@@ -223,13 +223,15 @@
             int in = dis(gen);
             int reward = dis(gen);
             reward += seed/10;
-            std::cout << "| get std upgrade" << std::endl;
-            player.health += 3000 * reward;
-            player.atk += 200 * reward;
-            player.critical_C += 0.1 * reward;
-            player.critical_D += 0.25 * reward;
-            player.resistance += 0.05 * reward;
-            player.strengthen += 0.1 * reward;
+            if(seed>=10) {
+                std::cout << "| get std upgrade" << std::endl;
+                player.health += 3000 * reward;
+                player.atk += 200 * reward;
+                player.critical_C += 0.1 * reward;
+                player.critical_D += 0.25 * reward;
+                player.resistance += 0.05 * reward;
+                player.strengthen += 0.1 * reward;
+            }
             switch(in){
                 case 1:
                     std::cout << "| get nengjinshou" << std::endl;
