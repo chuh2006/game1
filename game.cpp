@@ -16,6 +16,7 @@ public:
         while(true){
             menu0();
             int in0;
+            std::cout << ">";
             std::cin >> in0;
             switch(in0){
                 case 1:
@@ -36,6 +37,7 @@ private:
         while(floor < 13){
             menu1();
             int in1;
+            std::cout << ">";
             std::cin >> in1;
             switch(in1){
                 case 1:
@@ -70,6 +72,7 @@ private:
                 player.epochDamage = 0;
                 menu2();
                 int in2;
+                std::cout << ">";
                 std::cin >> in2;
                 switch(in2){
                     case 1:
@@ -192,7 +195,7 @@ private:
     void attact_P(double time, Player &player, Enemy &enemy, int sp){
         double damage = time * calcDam_P(player, enemy);
         enemy.health -= damage;
-        std::cout << "| player damage: " << damage << std::endl;
+        std::cout << "| player damage: " << damage << player.criticalShow() << std::endl;
         player.epochDamage += damage;
         player.sp += sp;
     }
