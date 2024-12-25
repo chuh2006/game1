@@ -34,6 +34,7 @@ public:
     double cureStrength;
     long long epochDamage = 0;
     int nengjinshou;
+    int isCri;
     double real_D(){
         return(atk * (1 + strengthen + isCritical() * critical_D));
     }
@@ -106,18 +107,24 @@ public:
             }
             estimateRew(reward);
         }
+
+    std::string criticalShow(){
+        if(this->isCri) return "!!!";
+        return " ";
+    }
 private:
     int isCritical(){
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis(0,100);
-        return (dis(gen) <= (this->critical_C * 100));
+        isCri = (dis(gen) <= (this->critical_C * 100));
+        return isCri;
     }
 
     void estimateRew(int reward){
-        if(this->critical_C > 1){
-            double temp = this->critical_C - 1;
-            this->critical_C = 1;
+        if(this->critical_C > 0.95){
+            double temp = this->critical_C - 0.95;
+            this->critical_C = 0.95;
             this->critical_D += 2 * temp;
         }
         if(this->resistance > 0.99){
