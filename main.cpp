@@ -13,11 +13,11 @@ int main(){
         int seed;
         std::cin >> seed;
         if (seed < 1) {
-            std::cout << "| seed must be greater than 0" << std::endl;
+            std::cout << "|*seed must be greater than 0" << std::endl;
             continue;
         }
         if(seed > 1000){
-            std::cout << "| seed must be less than 1000" << std::endl;
+            std::cout << "|*seed must be less than 1000" << std::endl;
             continue;
         }
         Game *game = new Game(seed);
