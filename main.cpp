@@ -25,6 +25,7 @@ int main(){
         delete game;
         menu();
         int in;
+        std::cout << ">";
         std::cin >> in;
         switch(in){
             case 1:
