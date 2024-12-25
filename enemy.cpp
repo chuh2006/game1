@@ -36,7 +36,7 @@ public:
         if(this->bustProgress >= 1){
             this->bustProgress = 0;
             isBust = true;
-            std::cout << "| enemy is busted\n| damage:" << 0.1 * this->maxHealth << std::endl;
+            std::cout << "| enemy is breaked\n| damage:" << 0.1 * this->maxHealth << std::endl;
             return processBust();
         }
         return 0.0;
