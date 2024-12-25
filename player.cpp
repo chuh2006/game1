@@ -49,7 +49,7 @@ public:
             std::uniform_int_distribution<> dis(1, 6);
             int in = dis(gen);
             int reward = dis(gen);
-            reward += int(log2(seed));
+            reward += int(sqrt(seed));
             if(seed>=10) {
                 std::cout << "| get std upgrade" << std::endl;
                 this->health += 3000 * reward;
