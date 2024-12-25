@@ -76,16 +76,11 @@ private:
                 std::cin >> in2;
                 switch(in2){
                     case 1:
-                        attact_PP({0.25, 0.25, 0.50}, player, enemy, 1);
-                        player.health += 1000*player.cureStrength;
-                        if(!enemy.isBust) attact_E(1, player, enemy);
-                        break;
-                    case 2:
                         attact_PP({0.50, 0.25, 1.5, 1}, player, enemy, 2);
                         player.nengjinshou += 1;
                         if(!enemy.isBust) attact_E(1, player, enemy);
                         break;
-                    case 3:
+                    case 2:
                         if(player.isSkillAvailable()){
                             attact_PP({0.5, 1, 1.25, 1.5, 0.75, 2.5}, player, enemy, 0, true);
                             player.nengjinshou += 2;
@@ -95,8 +90,18 @@ private:
                             std::cout << "| sp is not enough" << std::endl;
                         }
                         break;
+                    case 3:
+                        if(player.isFinalSkillAvailable()){
+                            attact_PP({1, 2, 1.25, 1.75, 1.5, 2.5, 1, 1.5, 2.5}, player, enemy, 0, true);
+                            player.nengjinshou += 6;
+                            if(!enemy.isBust) attact_E(1, player, enemy);
+                            player.sp -= 20;
+                        } else {
+                            std::cout << "| sp is not enough" << std::endl;
+                        }
+                        break;
                     case 4:
-                        player.health += enemy.atk * 10;
+                        player.health += enemy.atk * 0.5;
                         break;
                     case 5:
                         showStatus(player);
@@ -105,6 +110,7 @@ private:
                 }
                 if(player.nengjinshou >= 6 && in2 != 4 && in2 != 5){
                     player.nengjinshou -= 6;
+                    std::cout << "| trigger persuit" << std::endl;
                     attact_PP({1, 0.5, 2, 1, 1.5}, player, enemy, 0);
                 }
                 std::cout << "| player's total damage: " << player.epochDamage << std::endl;
@@ -165,7 +171,7 @@ private:
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis = getEasyRange(seed);
         std::vector<int> ret;
-        for (int i = 0; i < seed; i++) {
+        for (int i = 0; i < 1; i++) {
             int in = dis(gen);
             ret.push_back(in);
         }
@@ -177,7 +183,7 @@ private:
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis = getHardRange(seed);
         std::vector<int> ret;
-        for (int i = 0; i < seed; i++) {
+        for (int i = 0; i < 1; i++) {
             int in = dis(gen);
             ret.push_back(in);
         }
@@ -245,9 +251,9 @@ private:
     }
     void menu2(){
         std::cout << "\n------------------------" << std::endl;
-        std::cout << "| 1.common attack" << std::endl;
-        std::cout << "| 2.skill 1" << std::endl;
-        std::cout << "| 3.skill 2" << std::endl;
+        std::cout << "| 1.attack" << std::endl;
+        std::cout << "| 2.skill" << std::endl;
+        std::cout << "| 3.final skill" << std::endl;
         std::cout << "| 4.cure" << std::endl;
         std::cout << "| 5.show status" << std::endl;
         std::cout << "------------------------\n" << std::endl;
