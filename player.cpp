@@ -44,6 +44,11 @@ public:
         return false;
     }
 
+    bool isFinalSkillAvailable(){
+        if(this->sp >= 20) return true;
+        return false;
+    }
+
     void reward(int seed){
             std::random_device rd;
             std::mt19937 gen(rd());
