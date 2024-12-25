@@ -51,6 +51,7 @@
                         return;
                 }
             }
+            std::cout << "\n--------- end ---------" << std::endl;
         }
 
         void processEnemy(Player &player, int lable){
@@ -63,12 +64,7 @@
                 std::cout << "leader" << std::endl;
             }
             for (int i = 0; i < enemyId.size(); i++) {
-                Enemy enemy(enemyId[i]);
-                enemy.force(floor);
-                if(floor == 12){
-                    enemy.final();
-                    enemy.health *= seed/10 + 1;
-                }
+                Enemy enemy(enemyId[i], floor, this->seed);
                 std::cout << "enemy" + i << std::endl;
                 while(player.health > 0 && enemy.health > 0){
                     player.epochDamage = 0;
@@ -109,23 +105,26 @@
                         attact_PP({1, 0.5, 2, 1, 1.5}, player, enemy, 0);
                     }
                     std::cout << "| player's total damage: " << player.epochDamage << std::endl;
+                    std::cout << std::endl;
                     showMsg(player, enemy);
                     enemy.isBust = false;
                     enemy.resistance = enemy.tempResist;
                 }
                 if(player.health <= 0){
+                    std::cout << "\n--------- end ---------" << std::endl;
                     std::cout << "| you lose" << std::endl;
                     return;
                 }
                 if(enemy.health <= 0){
+                    std::cout << "\n--------- end ---------" << std::endl;
                     std::cout << "| you win" << std::endl;
                     break;
                 }
             }
-            reward(player);
+            player.reward(seed);
             if(lable == 1){
-                reward(player);
-                reward(player);
+                player.reward(seed);
+                player.reward(seed);
             }
             floor++;
         }
@@ -182,6 +181,7 @@
         }
 
         double calcDam_P(Player &player, Enemy &enemy){
+            if(enemy.resistance >= 0) return (player.real_D() * (1 - (enemy.resistance * (1 - player.penentration))));
             return (player.real_D() * (1 - enemy.resistance));
         }
         double calcDam_E(Enemy &enemy, Player &player){
@@ -200,7 +200,7 @@
             auto temp2 = player.critical_D;
             for (double time : times) {
                 attact_P(time, player, enem, 0);
-                player.epochDamage += enem.bust(1);
+                player.epochDamage += enem.bust(2);
                 if(isSkill){
                     player.strengthen += 0.5;
                     player.critical_D += 0.2;
@@ -216,74 +216,6 @@
             std::cout << "| enemy damage: " << damage << std::endl;
         }
 
-        void reward(Player &player){
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<> dis(1, 6);
-            int in = dis(gen);
-            int reward = dis(gen);
-            reward += seed/10;
-            if(seed>=10) {
-                std::cout << "| get std upgrade" << std::endl;
-                player.health += 3000 * reward;
-                player.atk += 200 * reward;
-                player.critical_C += 0.1 * reward;
-                player.critical_D += 0.25 * reward;
-                player.resistance += 0.05 * reward;
-                player.strengthen += 0.1 * reward;
-            }
-            switch(in){
-                case 1:
-                    std::cout << "| get nengjinshou" << std::endl;
-                    player.nengjinshou += 2 * reward;
-                    break;
-                case 2:
-                    std::cout << "| get atk" << std::endl;
-                    player.atk += 250 * reward;
-                    break;
-                case 3:
-                    std::cout << "| get critical" << std::endl;
-                    player.critical_C += 0.15 * reward;
-                    player.critical_D += 0.3 * reward;
-                    break;
-                case 4:
-                    std::cout << "| get strengthen and resisitance" << std::endl;
-                    player.strengthen += 0.2 * reward;
-                    player.resistance += 0.1 * reward;
-                    break;
-                case 5:
-                    std::cout << "| get all upgrade" << std::endl;
-                    player.health += 2500 * reward;
-                    player.atk += 200 * reward;
-                    player.critical_C += 0.1 * reward;
-                    player.critical_D += 0.25 * reward;
-                    player.strengthen += 0.2 * reward;
-                    player.resistance += 0.05 * reward;
-                    player.cureStrength += 0.2 * reward;
-                    break;
-                case 6:
-                    std::cout << "| get all upgrade" << std::endl;
-                    player.health += 2500 * reward;
-                    player.atk += 200 * reward;
-                    player.critical_C += 0.1 * reward;
-                    player.critical_D += 0.25 * reward;
-                    player.strengthen += 0.2 * reward;
-                    player.resistance += 0.05 * reward;
-                    player.cureStrength += 0.2 * reward;
-                    break;
-            }
-            if(player.critical_C > 1){
-                double temp = player.critical_C - 1;
-                player.critical_C = 1;
-                player.critical_D += 2 * temp;
-            }
-            if(player.resistance > 0.95){
-                double temp = player.resistance - 0.95;
-                player.resistance = 0.95;
-                player.strengthen += 2 * temp;
-            }
-        }
-
         std::uniform_int_distribution<> getEasyRange(int seed){
             std::uniform_int_distribution<> ret(seed*75, seed*150);
             return ret;
@@ -295,12 +227,12 @@
 
         void menu0(){
             std::cout << "\n-----------------------" << std::endl;
-            std::cout << "| 1.go" << std::endl;
+            std::cout << "| 1.start" << std::endl;
             std::cout << "| 2.quit" << std::endl;
             std::cout << "-----------------------\n" << std::endl;
         }
         void menu1(){
-            std::cout << "\n-----------------------" << std::endl;
+            std::cout << "\n----- SelectEnemy -----" << std::endl;
             std::cout << "| 1.common " + isCommonAvailable() << std::endl;
             std::cout << "| 2.leader " + isLiderAvailable() << std::endl;
             std::cout << "| 3.break " + isBreakAvailable() << std::endl;
@@ -308,7 +240,7 @@
             std::cout << "-----------------------\n" << std::endl;
         }
         void menu2(){
-            std::cout << "\n-----------------------" << std::endl;
+            std::cout << "\n------------------------" << std::endl;
             std::cout << "| 1.common attack" << std::endl;
             std::cout << "| 2.skill 1" << std::endl;
             std::cout << "| 3.skill 2" << std::endl;
@@ -326,6 +258,7 @@
             std::cout << "| strengthen: " << player.strengthen << std::endl;
             std::cout << "| resistance: " << player.resistance << std::endl;
             std::cout << "| cureStrength: " << player.cureStrength << std::endl;
+            std::cout << "| penentration: " << player.penentration << std::endl;
             std::cout << "| nengjinshou: " << player.nengjinshou << std::endl;
             std::cout << "| sp: " << player.sp << std::endl;
             std::cout << "------------------------\n" << std::endl;
