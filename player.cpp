@@ -120,13 +120,13 @@ private:
             this->critical_C = 1;
             this->critical_D += 2 * temp;
         }
-        if(this->resistance > 0.95){
-            double temp = this->resistance - 0.95;
-            this->resistance = 0.95;
+        if(this->resistance > 0.99){
+            double temp = this->resistance - 0.99;
+            this->resistance = 0.99;
             this->strengthen += 2 * temp;
         }
-        if(this->penentration > 0.9){
-            this->penentration = 0.9;
+        if(this->penentration > 0.95){
+            this->penentration = 0.95;
             std::cout << "| get little upgrade" << std::endl;
             this->health += 1500 * reward;
             this->atk += 150 * reward;
