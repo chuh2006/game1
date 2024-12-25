@@ -122,6 +122,7 @@ private:
             }
         }
         player.reward(seed);
+        player.sp += 2;
         if(lable == 1){
             player.reward(seed);
             player.reward(seed);
